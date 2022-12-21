@@ -14,8 +14,7 @@ namespace boilermon
         ESP_LOGCONFIG(TAG, "  Mode Pin: %s (%d)", mode_pin_->dump_summary().c_str());
         ESP_LOGCONFIG(TAG, "  Step Pin: %s (%d)", step_pin_->dump_summary().c_str());
         ESP_LOGCONFIG(TAG, "  Address: 0x%x", address_);
-        ESP_LOGCONFIG(TAG, "  Connected: %s", MyBoiler.connected() ? "Yes": "No");
-        
+        ESP_LOGCONFIG(TAG, "  Connected: %s", MyBoiler.connected() ? "Yes": "No");   
     }
 
     void BoilerMonComponent::setup() {
@@ -27,6 +26,9 @@ namespace boilermon
         mode_pin_->pin_mode(gpio::FLAG_OUTPUT);
         step_pin_->pin_mode(gpio::FLAG_OUTPUT);
 
+        if (!MyBoiler.begin(address_, sda_pin_->get_pin(), scl_pin_->get_pin()))
+            this->mark_failed();
+
     }
     void BoilerMonComponent::update() {
         
@@ -37,7 +39,7 @@ namespace boilermon
 
         if (MyBoiler.available()) {
             BoilerI2C::DisplayData new_message = MyBoiler.get_display();
-
+            
             if (new_message.get_menu() == BoilerI2C::STBY_DISP) {
                 if (status_text_sensor_ != nullptr)
                 status_text_sensor_->publish_state(flash_to_string(get_status_text(new_message.get_mode())));
