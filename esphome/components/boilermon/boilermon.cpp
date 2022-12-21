@@ -9,8 +9,10 @@ namespace boilermon
 
     void BoilerMonComponent::dump_config() {
         ESP_LOGCONFIG(TAG, "BoilerMon:");
-        ESP_LOGCONFIG(TAG, "  SDA: %s (%d)", sda_pin_->dump_summary().c_str(), sda_pin_->get_pin());
-        ESP_LOGCONFIG(TAG, "  SCL: %s (%d)", scl_pin_->dump_summary().c_str(), scl_pin_->get_pin());
+        ESP_LOGCONFIG(TAG, "  SDA Pin: %s (%d)", sda_pin_->dump_summary().c_str());
+        ESP_LOGCONFIG(TAG, "  SCL Pin: %s (%d)", scl_pin_->dump_summary().c_str());
+        ESP_LOGCONFIG(TAG, "  Mode Pin: %s (%d)", mode_pin_->dump_summary().c_str());
+        ESP_LOGCONFIG(TAG, "  Step Pin: %s (%d)", step_pin_->dump_summary().c_str());
         ESP_LOGCONFIG(TAG, "  Address: 0x%x", address_);
         ESP_LOGCONFIG(TAG, "  Connected: %s", MyBoiler.connected() ? "Yes": "No");
         
@@ -19,7 +21,11 @@ namespace boilermon
     void BoilerMonComponent::setup() {
         // This will be called once to set up the component
         // think of it as the setup() call in Arduino
-        MyBoiler.begin(address_, sda_pin_->get_pin(), scl_pin_->get_pin());
+        mode_pin_->setup();
+        step_pin_->setup();
+
+        mode_pin_->pin_mode(gpio::FLAG_OUTPUT);
+        step_pin_->pin_mode(gpio::FLAG_OUTPUT);
 
     }
     void BoilerMonComponent::update() {

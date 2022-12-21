@@ -34,6 +34,8 @@ boilermon:
   address: 0x38
   sda: SDA
   scl: SCL
+  mode_pin: GPIO19
+  step_pin: GPIO23
   
 # Text sensors with general information.
 text_sensor:
@@ -69,21 +71,4 @@ sensor:
 
 status_led:
   pin: GPIO5
-
-
-switch:
-- platform: gpio
-  pin: GPIO19
-  id: MODE_BTN
-  name: "Mode Button"
-  on_turn_on:
-  - delay: 250ms
-  - switch.turn_off: MODE_BTN 
-- platform: gpio
-  pin: GPIO23
-  id: STEP_BTN
-  name: "Step Button"
-  on_turn_on:
-  - delay: 250ms
-  - switch.turn_off: STEP_BTN
 

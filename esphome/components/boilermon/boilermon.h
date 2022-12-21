@@ -36,6 +36,8 @@ public:
   text_sensor::TextSensor *status_text_sensor_ {nullptr};
   InternalGPIOPin *sda_pin_ {nullptr};
   InternalGPIOPin *scl_pin_ {nullptr};
+  InternalGPIOPin *mode_pin_ {nullptr};
+  InternalGPIOPin *step_pin_ {nullptr};
   uint8_t address_;
   //ESPHome API Calls
   void set_value_sensor(sensor::Sensor *value_sensor) { value_sensor_ = value_sensor; }
@@ -43,6 +45,8 @@ public:
 
   void set_sda_pin(InternalGPIOPin *pin) { sda_pin_ = pin; }
   void set_scl_pin(InternalGPIOPin *pin) { scl_pin_ = pin; }
+  void set_mode_pin(InternalGPIOPin *pin) { mode_pin_ = pin; }
+  void set_step_pin(InternalGPIOPin *pin) { step_pin_ = pin; }
   void set_i2c_address(uint8_t address) { address_ = address; }
 
   float get_setup_priority() const { return setup_priority::LATE; }
