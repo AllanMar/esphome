@@ -43,12 +43,13 @@ namespace boilermon
             
             if (new_message.get_menu() == BoilerI2C::STBY_DISP) {
                 if (status_text_sensor_ != nullptr)
-                status_text_sensor_->publish_state(flash_to_string(get_status_text(new_message.get_mode())));
+                    status_text_sensor_->publish_state(flash_to_string(get_status_text(new_message.get_mode())));
                 if (value_sensor_ != nullptr)
-                value_sensor_->publish_state(new_message.get_value());
+                    value_sensor_->publish_state(new_message.get_value());
             }
 
-        }          
+        } 
+                 
   }
   const __FlashStringHelper *BoilerMonComponent::get_status_text(uint8_t status)
             {

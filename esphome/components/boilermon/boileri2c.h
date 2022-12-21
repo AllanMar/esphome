@@ -150,12 +150,12 @@ namespace esphome
 
             DisplayData get_display();
 
-        private:
+        protected:
             bool connected_ = false;
             bool available_ = false;
 
             volatile static uint8_t DRAM_ATTR i2c_data_[BOILERI2C_PACKET_SIZE];
-            volatile static unsigned long DRAM_ATTR i2c_last_time_;
+            volatile static uint32_t DRAM_ATTR i2c_last_time_;
             volatile static uint8_t DRAM_ATTR i2c_data_ready_;
             volatile static uint8_t DRAM_ATTR i2c_count_;
             volatile static uint8_t DRAM_ATTR dec_count_;

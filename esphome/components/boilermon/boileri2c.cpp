@@ -8,7 +8,7 @@ namespace boilermon
     const char *TAG2 = "boilermon.boileri2c"; // Logging tag
 
     volatile uint8_t BoilerI2C::i2c_data_[BOILERI2C_PACKET_SIZE];
-    volatile unsigned long BoilerI2C::i2c_last_time_ = 0;
+    volatile uint32_t BoilerI2C::i2c_last_time_ = 0;
     volatile uint8_t BoilerI2C::i2c_data_ready_ = false;
     volatile uint8_t BoilerI2C::i2c_count_ = 0;
     volatile uint8_t BoilerI2C::dec_count_ = 0;
