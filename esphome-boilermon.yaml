@@ -30,11 +30,6 @@ wifi:
 
 captive_portal:
 
-external_components:
-  - source:
-      type: local
-      path: custom_components
-
 boilermon:
   address: 0x38
   sda: SDA
