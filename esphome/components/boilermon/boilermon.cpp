@@ -39,6 +39,7 @@ namespace boilermon
 
         if (MyBoiler.available()) {
             BoilerI2C::DisplayData new_message = MyBoiler.get_display();
+            ESP_LOGD(TAG,"DISP: %c %cs %i (%c%c%c%c)", new_message.get_menu(), new_message.get_mode(), new_message.get_value(), new_message.digits[0], new_message.digits[1],new_message.digits[2], new_message.digits[3]);
             
             if (new_message.get_menu() == BoilerI2C::STBY_DISP) {
                 if (status_text_sensor_ != nullptr)
