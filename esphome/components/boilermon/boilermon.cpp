@@ -9,10 +9,10 @@ namespace boilermon
 
     void BoilerMonComponent::dump_config() {
         ESP_LOGCONFIG(TAG, "BoilerMon:");
-        ESP_LOGCONFIG(TAG, "  SDA Pin: %s (%d)", sda_pin_->dump_summary().c_str());
-        ESP_LOGCONFIG(TAG, "  SCL Pin: %s (%d)", scl_pin_->dump_summary().c_str());
-        ESP_LOGCONFIG(TAG, "  Mode Pin: %s (%d)", mode_pin_->dump_summary().c_str());
-        ESP_LOGCONFIG(TAG, "  Step Pin: %s (%d)", step_pin_->dump_summary().c_str());
+        ESP_LOGCONFIG(TAG, "  SDA Pin: %s", sda_pin_->dump_summary().c_str());
+        ESP_LOGCONFIG(TAG, "  SCL Pin: %s", scl_pin_->dump_summary().c_str());
+        ESP_LOGCONFIG(TAG, "  Mode Pin: %s", mode_pin_->dump_summary().c_str());
+        ESP_LOGCONFIG(TAG, "  Step Pin: %s", step_pin_->dump_summary().c_str());
         ESP_LOGCONFIG(TAG, "  Address: 0x%x", address_);
         ESP_LOGCONFIG(TAG, "  Connected: %s", MyBoiler.connected() ? "Yes": "No");   
     }
