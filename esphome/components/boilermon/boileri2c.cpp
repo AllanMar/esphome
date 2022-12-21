@@ -1,5 +1,5 @@
 #include "boileri2c.h"
-
+#include "esphome/core/helpers.h"
 
 namespace esphome
 {
@@ -12,7 +12,7 @@ namespace boilermon
     volatile uint8_t BoilerI2C::i2c_data_ready_ = false;
     volatile uint8_t BoilerI2C::i2c_count_ = 0;
     volatile uint8_t BoilerI2C::dec_count_ = 0;
-    void IRAM_ATTR BoilerI2C::receive_isr(int recv_bytes)
+    void IRAM_ATTR BoilerI2C::receive_isr_ (int recv_bytes)
     {
         uint8_t temp_data[BOILERI2C_PACKET_SIZE];
         uint8_t new_data_avail = false;
@@ -63,21 +63,23 @@ namespace boilermon
         // think of it as the setup() call in Arduino
         connected_ = Wire.begin(slave_address, sda_pin, scl_pin, 0);
         if (connected_ )
-           Wire.onReceive(receive_isr);
+           Wire.onReceive(receive_isr_);
 
         return connected_;
     }
     
     void BoilerI2C::loop()
     {
+        read_();
+    }
+    void IRAM_ATTR BoilerI2C::read_() {
+        InterruptLock lock;
         if (i2c_data_ready_)
         {
            for (uint8_t x = 2; x < BOILERI2C_PACKET_SIZE; x++)
-                    display.digits[x - 2] = convert_seg_(i2c_data_[x] & 0b01111111); // Remove DP
-             display.dec_count = dec_count_;
-            //ESP_LOGD(TAG2,"%x %x %x %x %x %x", i2c_data_[0], i2c_data_[1], i2c_data_[2], i2c_data_[3], i2c_data_[4], i2c_data_[5]);
-            //ESP_LOGD(TAG2, "DISPLAY DATA: %c DISP: %c %i (%c%c%c%c)", display.get_menu(), display.get_mode(), display.get_value(), display.digits[0], display.digits[1], display.digits[2], display.digits[3]);
-            i2c_data_ready_ = false;
+                display.digits[x - 2] = convert_seg_(i2c_data_[x] & 0b01111111); // Remove DP
+                display.dec_count = dec_count_;
+                i2c_data_ready_ = false;
             available_ = true;
         }
     }

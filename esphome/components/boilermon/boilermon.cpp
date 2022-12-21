@@ -8,11 +8,11 @@ namespace boilermon
     const char *TAG = "boilermon"; // Logging tag
 
     void BoilerMonComponent::dump_config() {
-        //ESP_LOGCONFIG(TAG, "BoilerMon:");
-        //ESP_LOGCONFIG(TAG, "  SDA: %s (%d)", sda_pin_->dump_summary().c_str(), sda_pin_->get_pin());
-        //ESP_LOGCONFIG(TAG, "  SCL: %s (%d)", scl_pin_->dump_summary().c_str(), scl_pin_->get_pin());
-        //ESP_LOGCONFIG(TAG, "  Address: 0x%x", address_);
-        //ESP_LOGCONFIG(TAG, "  Connected: %B", MyBoiler.connected());
+        ESP_LOGCONFIG(TAG, "BoilerMon:");
+        ESP_LOGCONFIG(TAG, "  SDA: %s (%d)", sda_pin_->dump_summary().c_str(), sda_pin_->get_pin());
+        ESP_LOGCONFIG(TAG, "  SCL: %s (%d)", scl_pin_->dump_summary().c_str(), scl_pin_->get_pin());
+        ESP_LOGCONFIG(TAG, "  Address: 0x%x", address_);
+        ESP_LOGCONFIG(TAG, "  Connected: %s", MyBoiler.connected() ? "Yes": "No");
         
     }
 
@@ -23,7 +23,7 @@ namespace boilermon
 
     }
     void BoilerMonComponent::update() {
-
+        
     }
     void BoilerMonComponent::loop() {
         
@@ -31,6 +31,7 @@ namespace boilermon
 
         if (MyBoiler.available()) {
             BoilerI2C::DisplayData new_message = MyBoiler.get_display();
+
             if (new_message.get_menu() == BoilerI2C::STBY_DISP) {
                 if (status_text_sensor_ != nullptr)
                 status_text_sensor_->publish_state(flash_to_string(get_status_text(new_message.get_mode())));

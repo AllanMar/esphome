@@ -145,28 +145,23 @@ namespace esphome
             bool begin(uint8_t slave_address, uint8_t sda_pin, uint8_t scl_pin);
             void loop();
             
-        bool available() { return available_; }
-        bool connected() { return connected_; }
+            bool available() { return available_; }
+            bool connected() { return connected_; }
 
-        DisplayData get_display();
-        //void set_sda_pin (uint8_t pin) { sda_pin_ = pin; }
-        //void set_scl_pin (uint8_t pin) { scl_pin_ = pin; }
-        //void set_slave_address (uint8_t address) { slave_address_ = address; }
+            DisplayData get_display();
 
         private:
             bool connected_ = false;
             bool available_ = false;
-
-            //uint8_t sda_pin_;
-            //uint8_t scl_pin_;
-            //uint8_t slave_address_;
 
             volatile static uint8_t DRAM_ATTR i2c_data_[BOILERI2C_PACKET_SIZE];
             volatile static unsigned long DRAM_ATTR i2c_last_time_;
             volatile static uint8_t DRAM_ATTR i2c_data_ready_;
             volatile static uint8_t DRAM_ATTR i2c_count_;
             volatile static uint8_t DRAM_ATTR dec_count_;
-            static void IRAM_ATTR receive_isr(int howMany);
+            static void IRAM_ATTR receive_isr_(int howMany);
+            void IRAM_ATTR read_();
+
             char convert_seg_(uint8_t i)
             {
                 for (uint8_t x = 0; x < SEG_LOOKUP_SIZE; x++)
