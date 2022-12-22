@@ -65,9 +65,26 @@ sensor:
     boiler_status:
       name: ${name} Status
     boiler_value:
-      name: ${name} Temperature
+      name: ${name} Status Temp
       unit_of_measurement: "°F"
-
+    supply_temp:
+      name: ${name} Supply Temp
+      unit_of_measurement: "°F"
+    return_temp:
+      name: ${name} Return Temp
+      unit_of_measurement: "°F"
+    dhw_temp:
+      name: ${name} DHW Temp
+      unit_of_measurement: "°F"
+    outdoor_temp:
+      name: ${name} Outdoor Temp
+      unit_of_measurement: "°F"
+    flue_temp:
+      name: ${name} Flue Temp
+      unit_of_measurement: "°F"
+    boiler_setpoint:
+      name: ${name} Setpoint
+      unit_of_measurement: "°F"
 
 status_led:
   pin: GPIO5

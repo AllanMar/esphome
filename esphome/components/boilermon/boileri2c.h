@@ -144,7 +144,6 @@ namespace esphome
             }
             bool begin(uint8_t slave_address, uint8_t sda_pin, uint8_t scl_pin);
             void loop();
-            
             bool available() { return available_; }
             bool connected() { return connected_; }
 

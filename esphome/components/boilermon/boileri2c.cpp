@@ -73,7 +73,7 @@ namespace boilermon
         read_();
     }
     void IRAM_ATTR BoilerI2C::read_() {
-        InterruptLock lock;
+        //InterruptLock lock;
         if (i2c_data_ready_)
         {
            for (uint8_t x = 2; x < BOILERI2C_PACKET_SIZE; x++)

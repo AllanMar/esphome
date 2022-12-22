@@ -5,6 +5,7 @@
 #include "esphome/core/gpio.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/text_sensor/text_sensor.h"
+#include "esphome/components/api/custom_api_device.h"
 
 namespace esphome {
 namespace boilermon {
@@ -30,9 +31,17 @@ static std::string flash_to_string(const __FlashStringHelper *flash) {
 //uint8_t statusVal=0;
 //bool newStatus=false;
 
-class BoilerMonComponent : public PollingComponent {
+class BoilerMonComponent : public PollingComponent, public api::CustomAPIDevice {
 public:
   sensor::Sensor *value_sensor_ {nullptr};
+
+  sensor::Sensor *supply_temp_sensor_ {nullptr};
+  sensor::Sensor *return_temp_sensor_ {nullptr};
+  sensor::Sensor *dhw_temp_sensor_ {nullptr};
+  sensor::Sensor *outdoor_temp_sensor_ {nullptr};
+  sensor::Sensor *flue_temp_sensor_ {nullptr};
+  sensor::Sensor *setpoint_temp_sensor_ {nullptr};
+
   text_sensor::TextSensor *status_text_sensor_ {nullptr};
   InternalGPIOPin *sda_pin_ {nullptr};
   InternalGPIOPin *scl_pin_ {nullptr};
@@ -43,6 +52,15 @@ public:
   void set_value_sensor(sensor::Sensor *value_sensor) { value_sensor_ = value_sensor; }
   void set_status_text_sensor(text_sensor::TextSensor *status_text_sensor) { status_text_sensor_ = status_text_sensor; }
 
+  void set_supply_temp_sensor(sensor::Sensor *supply_temp_sensor) { supply_temp_sensor_ = supply_temp_sensor; }
+  void set_return_temp_sensor(sensor::Sensor *return_temp_sensor) { return_temp_sensor_ = return_temp_sensor; }
+  void set_dhw_temp_sensor(sensor::Sensor *dhw_temp_sensor) { dhw_temp_sensor_ = dhw_temp_sensor; }
+  void set_outdoor_temp_sensor(sensor::Sensor *outdoor_temp_sensor) { outdoor_temp_sensor_ = outdoor_temp_sensor; }
+  void set_flue_temp_sensor(sensor::Sensor *flue_temp_sensor) { flue_temp_sensor_ = flue_temp_sensor; }
+  void set_setpoint_temp_sensor(sensor::Sensor *setpoint_temp_sensor) { setpoint_temp_sensor_ = setpoint_temp_sensor; }
+
+  void on_scan_menu(std::string menu, int length);
+
   void set_sda_pin(InternalGPIOPin *pin) { sda_pin_ = pin; }
   void set_scl_pin(InternalGPIOPin *pin) { scl_pin_ = pin; }
   void set_mode_pin(InternalGPIOPin *pin) { mode_pin_ = pin; }
@@ -52,7 +70,8 @@ public:
   float get_setup_priority() const { return setup_priority::LATE; }
   void dump_config();
   
-
+  BoilerI2C::MenuType desired_menu = BoilerI2C::STBY_DISP;
+  uint8_t desired_mode = '2';
   BoilerI2C MyBoiler;
   int tempArray[7] = {0,0,0,0,0,0,0};
   int rateArray[3] = {0,0,0};
